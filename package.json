@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:up": "supabase start",
+    "db:migrate": "supabase migration up",
+    "db:seed": "supabase db reset --with-seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -22,6 +25,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.43",
     "@types/react": "^19",
