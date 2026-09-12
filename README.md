@@ -2,6 +2,8 @@
 
 Turn your real life into a role-playing game. Complete real-world quests, level up your character, build streaks, and spend your hard-earned gold in the guild shop — all backed by a secure, server-authoritative progression engine.
 
+**Live app:** https://lifequest-ivory.vercel.app
+
 ![Life Quest](public/og-image.png)
 
 ## Stack

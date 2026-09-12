@@ -13,7 +13,7 @@ import {
   ArrowUUpLeft,
   Sword,
 } from "@phosphor-icons/react";
-import type { AttributeKey, DifficultyTier, Task } from "@/lib/game/types";
+import type { AttributeKey, CompleteTaskResult, DifficultyTier, Task } from "@/lib/game/types";
 import { ATTRIBUTE_META, TIER_META } from "@/lib/game/types";
 import { Chip, Window, WindowTitle } from "@/components/ui";
 import { playVictoryFanfare, playErrorBuzz } from "@/lib/audio/fanfare";
@@ -51,6 +51,7 @@ function QuestRow({
   const supabase = createClient();
   const pushToast = useGameStore((s) => s.pushToast);
   const setTasks = useGameStore((s) => s.setTasks);
+  const applyCompletion = useGameStore((s) => s.applyCompletion);
   const tasks = useGameStore((s) => s.tasks);
   const [busy, setBusy] = useState(false);
   const reduce = useReducedMotion();
@@ -72,8 +73,9 @@ function QuestRow({
     const origin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
 
     try {
-      const { error } = await supabase.rpc("complete_task", { task_id: task.id });
+      const { data, error } = await supabase.rpc("complete_task", { task_id: task.id });
       if (error) throw error;
+      if (data) applyCompletion(data as CompleteTaskResult);
       onCompleted(task, origin);
     } catch (err) {
       playErrorBuzz();
