@@ -1,26 +1,278 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Life Quest — 16-bit JRPG design system
+ * Theme: "Night Window" — deep indigo menu-window chrome, gold accent,
+ * MMO rarity language for items. Committed color strategy.
+ */
+
+@theme {
+  /* Window chrome — the FF-style menu box, not a Bootstrap card */
+  --color-window: oklch(21% 0.075 280);
+  --color-window-deep: oklch(14.5% 0.06 280);
+  --color-window-raised: oklch(26% 0.085 282);
+  --color-window-border: oklch(52% 0.11 285);
+  --color-window-border-bright: oklch(72% 0.12 284);
+
+  /* Field — the page behind the windows */
+  --color-field: oklch(11% 0.045 280);
+  --color-field-far: oklch(7.5% 0.03 280);
+
+  /* Ink — text on windows */
+  --color-ink: oklch(93% 0.02 284);
+  --color-ink-dim: oklch(72% 0.035 284);
+  --color-ink-faint: oklch(55% 0.035 284);
+
+  /* Accent — antique gold, one accent per page */
+  --color-gold: oklch(83% 0.16 88);
+  --color-gold-bright: oklch(88% 0.15 92);
+  --color-gold-deep: oklch(70% 0.14 84);
+
+  /* Rarity — MMO item language everyone reads instantly */
+  --color-rarity-common: oklch(70% 0.02 270);
+  --color-rarity-uncommon: oklch(72% 0.14 155);
+  --color-rarity-rare: oklch(65% 0.16 255);
+  --color-rarity-epic: oklch(60% 0.17 305);
+  --color-rarity-legendary: oklch(75% 0.15 75);
+
+  /* Attributes — each stat owns a hue */
+  --color-str: oklch(64% 0.19 27);
+  --color-int: oklch(65% 0.15 255);
+  --color-vit: oklch(70% 0.14 145);
+  --color-dis: oklch(68% 0.13 220);
+  --color-cha: oklch(68% 0.17 340);
+  --color-cra: oklch(72% 0.14 70);
+
+  /* Semantic */
+  --color-danger: oklch(62% 0.2 25);
+  --color-success: oklch(70% 0.15 155);
+
+  /* Fonts */
+  --font-display: var(--font-pixel), "Courier New", monospace;
+  --font-body: var(--font-body-sans), system-ui, sans-serif;
+
+  /* Chunky JRPG border radius — consistent everywhere */
+  --radius-window: 10px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-field);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Starfield page background — subtle, fixed, GPU-cheap */
+.page-field {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+.page-field::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, oklch(24% 0.07 280 / 0.55), transparent 65%),
+    radial-gradient(900px 500px at 85% 110%, oklch(20% 0.06 285 / 0.5), transparent 60%),
+    var(--color-field);
+}
+.page-field::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ————— JRPG window chrome ————— */
+.jrpg-window {
+  position: relative;
+  background: linear-gradient(180deg, oklch(26% 0.085 282 / 0.92), oklch(21% 0.075 280 / 0.92));
+  border: 2px solid var(--color-window-border);
+  border-radius: var(--radius-window);
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.08),
+    inset 0 0 0 2px oklch(14.5% 0.06 280 / 0.9),
+    0 4px 24px oklch(5% 0.02 280 / 0.5);
+}
+.jrpg-window-bright {
+  border-color: var(--color-window-border-bright);
+}
+
+/* Corner rivets — the menu-box signature detail */
+.jrpg-rivets::before,
+.jrpg-rivets::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold);
+  box-shadow: 0 0 0 2px oklch(14.5% 0.06 280 / 0.9);
+  border-radius: 1px;
+  pointer-events: none;
+}
+.jrpg-rivets::before {
+  top: 4px;
+  left: 4px;
+}
+.jrpg-rivets::after {
+  bottom: 4px;
+  right: 4px;
+}
+
+/* Pixel-perfect heading rendering helper */
+.pixel-text {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+}
+
+/* ATB-style stat bars — chunky, notched */
+.stat-bar-track {
+  position: relative;
+  overflow: hidden;
+  background: oklch(12% 0.03 280);
+  border: 1.5px solid oklch(30% 0.05 280);
+  border-radius: 4px;
+}
+.stat-bar-fill {
+  height: 100%;
+  background-image: linear-gradient(
+    90deg,
+    oklch(100% 0 0 / 0.15) 0px,
+    oklch(100% 0 0 / 0) 3px,
+    oklch(100% 0 0 / 0) 100%
+  );
+  background-size: 4px 100%;
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Buttons — chunky, tactile, gold primary */
+.btn-jrpg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  border-width: 2px;
+  border-style: solid;
+  transition:
+    transform 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 120ms,
+    box-shadow 120ms;
+}
+.btn-jrpg:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+.btn-jrpg:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 2px;
+}
+.btn-primary {
+  background: linear-gradient(180deg, var(--color-gold-bright), var(--color-gold));
+  border-color: var(--color-gold-deep);
+  color: oklch(18% 0.05 80);
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.4),
+    0 2px 12px oklch(83% 0.16 88 / 0.25);
+}
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-ghost {
+  background: oklch(21% 0.075 280 / 0.8);
+  border-color: var(--color-window-border);
+  color: var(--color-ink);
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--color-window-border-bright);
+  background: oklch(26% 0.085 282 / 0.9);
+}
+.btn-danger {
+  background: oklch(21% 0.075 280 / 0.8);
+  border-color: oklch(45% 0.13 25);
+  color: oklch(80% 0.1 25);
+}
+.btn-danger:hover:not(:disabled) {
+  border-color: var(--color-danger);
+  color: oklch(88% 0.09 25);
+}
+
+/* Inputs */
+.input-jrpg {
+  width: 100%;
+  background: oklch(12.5% 0.04 280);
+  border: 2px solid var(--color-window-border);
+  border-radius: 6px;
+  padding: 0.65rem 0.8rem;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.input-jrpg::placeholder {
+  color: var(--color-ink-faint);
+}
+.input-jrpg:focus {
+  outline: none;
+  border-color: var(--color-window-border-bright);
+  box-shadow: 0 0 0 3px oklch(72% 0.12 284 / 0.2);
+}
+.input-jrpg[aria-invalid="true"] {
+  border-color: oklch(55% 0.18 25);
+}
+
+/* Blinking cursor indicator — the "press start" energy */
+@keyframes cursor-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0.25; }
+}
+.cursor-blink {
+  animation: cursor-blink 1.1s steps(1) infinite;
+}
+
+/* Text selection in theme */
+::selection {
+  background: oklch(83% 0.16 88 / 0.3);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-field-far);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(30% 0.06 280);
+  border-radius: 5px;
+  border: 2px solid var(--color-field-far);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(38% 0.07 280);
+}
+
+/* Reduced motion — collapse all celebration to instant */
+@media (prefers-reduced-motion: reduce) {
+  .stat-bar-fill,
+  .btn-jrpg,
+  .cursor-blink {
+    transition: none;
+    animation: none;
+  }
 }
