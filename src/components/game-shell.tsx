@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignOut, Sword, Storefront, MapTrifold } from "@phosphor-icons/react";
+import { SignOut, Sword, Storefront, MapTrifold, BookOpen } from "@phosphor-icons/react";
 import { Toaster } from "@/components/toaster";
 import { OfflineBanner } from "@/components/offline-banner";
 import { ThemeApplier } from "@/components/theme-applier";
@@ -23,6 +23,7 @@ export function GameShell({
     { href: "/quests", label: "Quests", icon: <Sword size={14} weight="duotone" aria-hidden="true" /> },
     { href: "/map", label: "Map", icon: <MapTrifold size={14} weight="duotone" aria-hidden="true" /> },
     { href: "/shop", label: "Shop", icon: <Storefront size={14} weight="duotone" aria-hidden="true" /> },
+    { href: "/chronicle", label: "Chronicle", icon: <BookOpen size={14} weight="duotone" aria-hidden="true" /> },
   ];
 
   return (

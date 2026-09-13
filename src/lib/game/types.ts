@@ -189,6 +189,42 @@ export interface Achievement {
   gold_reward: number;
 }
 
+// ——— Chronicle shapes (get_chronicle RPC) ———
+
+export interface HeatmapCell {
+  day: string; // YYYY-MM-DD
+  quests: number;
+  xp: number;
+}
+
+export interface WeeklyBucket {
+  week: string; // YYYY-MM-DD (week start, Monday)
+  xp: Partial<Record<AttributeKey, number>>;
+  quests: number;
+}
+
+export interface ChronicleTotals {
+  quests: number;
+  xp: number;
+  gold: number;
+  crits: number;
+  active_days: number;
+}
+
+export interface ChronicleEvent {
+  event: string;
+  detail: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface ChronicleData {
+  heatmap: HeatmapCell[];
+  weekly: WeeklyBucket[];
+  totals: ChronicleTotals;
+  events: ChronicleEvent[];
+  profile: Profile;
+}
+
 export interface ClaimChestResult {
   gold_gained: number;
   item_slug: string | null;

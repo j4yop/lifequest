@@ -12,7 +12,7 @@ import { LevelUpOverlay, XPOrbBurst, CritBanner } from "@/components/celebration
 import { DailyChest } from "@/components/daily-chest";
 import { AchievementsPanel } from "@/components/achievements-panel";
 import { playLevelUpFanfare, playCritSting } from "@/lib/audio/fanfare";
-import { MapTrifold } from "@phosphor-icons/react";
+import { MapTrifold, BookOpen } from "@phosphor-icons/react";
 
 /**
  * The quest board page composition: character card + attributes + quest list,
@@ -70,6 +70,9 @@ export function QuestBoardView({
             </Link>
             <Link href="/shop" className="btn-jrpg btn-ghost px-4 py-2 text-[10px]">
               Guild Shop
+            </Link>
+            <Link href="/chronicle" className="btn-jrpg btn-ghost px-4 py-2 text-[10px]">
+              <BookOpen size={12} weight="duotone" aria-hidden="true" /> Chronicle
             </Link>
           </nav>
         </div>
