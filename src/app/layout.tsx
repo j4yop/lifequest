@@ -1,17 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Press_Start_2P, Nunito } from "next/font/google";
+import { Silkscreen, Atkinson_Hyperlegible, VT323 } from "next/font/google";
 import "./globals.css";
 
-const pixel = Press_Start_2P({
+const pixel = Silkscreen({
   variable: "--font-pixel",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "700"],
   display: "swap",
 });
 
-const bodySans = Nunito({
+const bodySans = Atkinson_Hyperlegible({
   variable: "--font-body-sans",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
+const numsMono = VT323({
+  variable: "--font-nums-mono",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -47,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#161222",
+  themeColor: "#ece1c3",
   width: "device-width",
   initialScale: 1,
 };
@@ -56,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${pixel.variable} ${bodySans.variable} h-full antialiased`}
+      className={`${pixel.variable} ${bodySans.variable} ${numsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-field text-ink">
         {children}

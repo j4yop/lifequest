@@ -70,6 +70,44 @@ export function XPOrbBurst({
 }
 
 /**
+ * Crit banner — nat-20 double-reward flash, wax-red and proud.
+ */
+export function CritBanner({ roll, onDone }: { roll: number; onDone: () => void }) {
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const t = setTimeout(onDone, reduce ? 1200 : 2400);
+    return () => clearTimeout(t);
+  }, [onDone, reduce]);
+
+  return (
+    <motion.div
+      role="status"
+      aria-live="assertive"
+      className="pointer-events-none fixed inset-x-0 top-20 z-50 flex justify-center px-4"
+      initial={{ opacity: 0, y: reduce ? 0 : -24 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: reduce ? 0 : -12 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+    >
+      <div className="crit-flash-anim jrpg-window jrpg-rivets flex items-center gap-4 px-6 py-4">
+        <span className="pixel-text ledger-nums flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-gold-deep bg-gold text-lg text-[oklch(96%_0.02_85)]">
+          {roll}
+        </span>
+        <div>
+          <p className="pixel-text text-[11px] leading-relaxed text-gold">
+            Critical Hit!
+          </p>
+          <p className="mt-0.5 text-sm text-ink-dim font-body">
+            Nat 20 — <strong className="text-ink">double rewards</strong> stamped on this entry.
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/**
  * Level-up overlay — full-screen celebration with the JRPG announce window.
  * Honors prefers-reduced-motion (no shake, fade only).
  */
@@ -91,6 +129,10 @@ export function LevelUpOverlay({
     result.attribute_levels_gained > 0
       ? `${result.attribute.toUpperCase()} grew to a new height`
       : "The road goes ever upward";
+
+  const gearLine = result.gear_granted
+    ? `${result.gear_granted} added to your wardrobe`
+    : null;
 
   return (
     <motion.div
@@ -127,6 +169,11 @@ export function LevelUpOverlay({
         <p className="text-ink-dim text-sm font-body">
           {subtitle}
         </p>
+        {gearLine && (
+          <p className="pixel-text mt-3 text-[10px] leading-relaxed text-rarity-uncommon">
+            ✦ {gearLine}
+          </p>
+        )}
         <button
           onClick={onDone}
           className="btn-jrpg btn-primary mt-8 px-6 py-2.5 text-[11px]"

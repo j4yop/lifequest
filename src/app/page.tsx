@@ -4,11 +4,12 @@ import Link from "next/link";
 import {
   Sword,
   Flame,
-  Barbell,
-  Storefront,
   ArrowRight,
   TreasureChest,
   LockSimple,
+  MapTrifold,
+  DiceFive,
+  PersonArmsSpread,
 } from "@phosphor-icons/react";
 
 /** Landing hero visual — a real miniature of the actual game card. */
@@ -135,20 +136,20 @@ export default function Home() {
               {
                 n: "02",
                 title: "Complete it",
-                body: "One tap triggers the victory fanfare. XP flies to your bar, gold hits your purse — instantly.",
-                icon: <Flame size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
+                body: "One tap rolls the d20 — a natural 20 doubles your rewards. XP flies, gold lands, the fanfare plays.",
+                icon: <DiceFive size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
               },
               {
                 n: "03",
                 title: "Grow your hero",
-                body: "Every level costs more than the last. Strength, Intellect, Vitality, Discipline, Charisma, Craft.",
-                icon: <Barbell size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
+                body: "Six attributes level on real curves — and your paper-doll hero visibly earns better gear as they grow.",
+                icon: <PersonArmsSpread size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
               },
               {
                 n: "04",
-                title: "Spend your loot",
-                body: "Titles, avatar frames, streak protection. Earned gold buys real customization for your card.",
-                icon: <Storefront size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
+                title: "Walk the world",
+                body: "Levels unlock zones on the world map. Streaks fatten your daily chest. Gold buys glory in the shop.",
+                icon: <MapTrifold size={22} weight="duotone" className="text-gold" aria-hidden="true" />,
               },
             ].map((step) => (
               <li key={step.n} className="relative">

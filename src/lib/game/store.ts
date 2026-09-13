@@ -7,6 +7,8 @@ import type {
   Task,
   InventoryItem,
   CompleteTaskResult,
+  GearMap,
+  Zone,
 } from "@/lib/game/types";
 
 // ——— Types ———
@@ -24,6 +26,8 @@ interface GameStore {
   profile: Profile | null;
   attributes: AttributeRow[];
   inventory: InventoryItem[];
+  gear: GearMap;
+  zones: Zone[];
   tasks: Task[];
   tasksLoading: boolean;
   sheetLoading: boolean;
@@ -38,10 +42,13 @@ interface GameStore {
     profile: Profile | null;
     attributes: AttributeRow[];
     inventory: InventoryItem[];
+    gear?: GearMap;
+    zones?: Zone[];
   }) => void;
   setTasks: (tasks: Task[]) => void;
   setTasksLoading: (loading: boolean) => void;
   setSheetLoading: (loading: boolean) => void;
+  setProfile: (profile: Profile) => void;
   applyCompletion: (result: CompleteTaskResult) => void;
   clearCelebration: () => void;
   pushToast: (kind: ToastKind, message: string) => void;
@@ -56,6 +63,8 @@ export const useGameStore = create<GameStore>((set) => ({
   profile: null,
   attributes: [],
   inventory: [],
+  gear: {},
+  zones: [],
   tasks: [],
   tasksLoading: true,
   sheetLoading: true,
@@ -64,17 +73,26 @@ export const useGameStore = create<GameStore>((set) => ({
   toasts: [],
   celebrateLevelUp: null,
 
-  setSheet: ({ profile, attributes, inventory }) =>
-    set({ profile, attributes, inventory, sheetLoading: false }),
+  setSheet: ({ profile, attributes, inventory, gear, zones }) =>
+    set({
+      profile,
+      attributes,
+      inventory,
+      gear: gear ?? {},
+      zones: zones ?? [],
+      sheetLoading: false,
+    }),
 
   setTasks: (tasks) => set({ tasks, tasksLoading: false }),
   setTasksLoading: (loading) => set({ tasksLoading: loading }),
   setSheetLoading: (loading) => set({ sheetLoading: loading }),
+  setProfile: (profile) => set({ profile }),
 
   applyCompletion: (result) => {
     set({
       profile: result.profile,
       attributes: result.attributes,
+      ...(result.gear ? { gear: result.gear } : {}),
       lastCompletion: result,
     });
     if (result.leveled_up) {

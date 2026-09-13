@@ -39,6 +39,8 @@ health_timeout = "2m"
 # The database major version to use. This has to be the same as your remote database's. Run `SHOW
 # server_version;` on the remote database to check.
 major_version = 17
+# Pin the image tag that was working before the 17.6.1.167 init breakage.
+image = "17.6.1.063"
 
 [db.pooler]
 enabled = false
@@ -115,6 +117,8 @@ port = 54324
 enabled = true
 # The maximum file size allowed (e.g. "5MB", "500KB").
 file_size_limit = "50MiB"
+# Pin storage image: v1.73.1 ships a broken /app/package.json with node 24.
+image = "v1.72.1"
 
 # Uncomment to configure local storage buckets
 # [storage.buckets.images]
@@ -385,7 +389,7 @@ deno_version = 2
 # secret_key = "env(SECRET_VALUE)"
 
 [analytics]
-enabled = true
+enabled = false
 port = 54327
 # Configure one of the supported backends: `postgres`, `bigquery`.
 backend = "postgres"

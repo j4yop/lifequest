@@ -22,9 +22,6 @@ export default async function QuestsPage() {
   const equippedTitle = sheet?.inventory?.find(
     (i: { kind: string; equipped: boolean }) => i.kind === "title" && i.equipped
   )?.name;
-  const equippedFrame = sheet?.inventory?.find(
-    (i: { kind: string; equipped: boolean }) => i.kind === "frame" && i.equipped
-  )?.slug;
 
   return (
     <GameShell>
@@ -33,12 +30,11 @@ export default async function QuestsPage() {
           profile: sheet?.profile ?? null,
           attributes: sheet?.attributes ?? [],
           inventory: sheet?.inventory ?? [],
+          gear: sheet?.gear ?? {},
+          zones: sheet?.zones ?? [],
         }}
       >
-        <QuestBoardView
-          equippedTitle={equippedTitle}
-          equippedFrame={equippedFrame}
-        />
+        <QuestBoardView equippedTitle={equippedTitle} />
       </SheetProvider>
     </GameShell>
   );

@@ -1,160 +1,166 @@
 @import "tailwindcss";
 
 /*
- * Life Quest — 16-bit JRPG design system
- * Theme: "Night Window" — deep indigo menu-window chrome, gold accent,
- * MMO rarity language for items. Committed color strategy.
+ * Life Quest — "Ledgerlight" design system
+ * A scribe's desk at golden hour: parchment, ink, wax seals.
+ * Habits become entries in a chronicle you write about yourself.
+ * Rarity ramp = medieval pigment prices (umber < verdigris < cobalt < carmine < gold leaf).
+ * NO blur shadows, NO glows, NO gradients-as-decoration. Hard ink lines only.
  */
 
 @theme {
-  /* Window chrome — the FF-style menu box, not a Bootstrap card */
-  --color-window: oklch(21% 0.075 280);
-  --color-window-deep: oklch(14.5% 0.06 280);
-  --color-window-raised: oklch(26% 0.085 282);
-  --color-window-border: oklch(52% 0.11 285);
-  --color-window-border-bright: oklch(72% 0.12 284);
+  /* ——— surfaces ——— */
+  --color-page: oklch(91% 0.03 90); /* the desk */
+  --color-parchment: oklch(85% 0.04 85); /* window body */
+  --color-parchment-deep: oklch(78% 0.045 80); /* wells, inputs, bars */
+  --color-parchment-far: oklch(73% 0.04 82); /* pressed wells */
 
-  /* Field — the page behind the windows */
-  --color-field: oklch(11% 0.045 280);
-  --color-field-far: oklch(7.5% 0.03 280);
+  /* legacy aliases (class names kept) */
+  --color-field: oklch(91% 0.03 90);
+  --color-field-far: oklch(86% 0.035 87);
+  --color-window: oklch(85% 0.04 85);
+  --color-window-deep: oklch(78% 0.045 80);
+  --color-window-raised: oklch(88% 0.035 86);
+  --color-window-border: oklch(28% 0.03 55);
+  --color-window-border-bright: oklch(40% 0.03 55);
 
-  /* Ink — text on windows */
-  --color-ink: oklch(93% 0.02 284);
-  --color-ink-dim: oklch(72% 0.035 284);
-  --color-ink-faint: oklch(55% 0.035 284);
+  /* ——— ink ——— */
+  --color-ink: oklch(28% 0.03 55);
+  --color-ink-dim: oklch(46% 0.04 60);
+  --color-ink-faint: oklch(62% 0.03 70);
 
-  /* Accent — antique gold, one accent per page */
-  --color-gold: oklch(83% 0.16 88);
-  --color-gold-bright: oklch(88% 0.15 92);
-  --color-gold-deep: oklch(70% 0.14 84);
+  /* ——— accents ——— */
+  --color-gold: oklch(45% 0.13 30); /* oxblood wax (THE accent) */
+  --color-gold-bright: oklch(55% 0.14 32); /* wax, pressed lighter */
+  --color-gold-deep: oklch(34% 0.10 30); /* wax shadow */
 
-  /* Rarity — MMO item language everyone reads instantly */
-  --color-rarity-common: oklch(70% 0.02 270);
-  --color-rarity-uncommon: oklch(72% 0.14 155);
-  --color-rarity-rare: oklch(65% 0.16 255);
-  --color-rarity-epic: oklch(60% 0.17 305);
-  --color-rarity-legendary: oklch(75% 0.15 75);
+  /* ——— rarity = pigment prices ——— */
+  --color-rarity-common: oklch(50% 0.05 60); /* umber */
+  --color-rarity-uncommon: oklch(45% 0.10 155); /* verdigris ink */
+  --color-rarity-rare: oklch(46% 0.13 245); /* cobalt */
+  --color-rarity-epic: oklch(50% 0.17 25); /* carmine */
+  --color-rarity-legendary: oklch(72% 0.14 92); /* gold leaf */
 
-  /* Attributes — each stat owns a hue */
-  --color-str: oklch(64% 0.19 27);
-  --color-int: oklch(65% 0.15 255);
-  --color-vit: oklch(70% 0.14 145);
-  --color-dis: oklch(68% 0.13 220);
-  --color-cha: oklch(68% 0.17 340);
-  --color-cra: oklch(72% 0.14 70);
+  /* ——— attributes — pigment-coded ——— */
+  --color-str: oklch(48% 0.15 28); /* rust red */
+  --color-int: oklch(46% 0.13 245); /* cobalt */
+  --color-vit: oklch(44% 0.10 155); /* forest green */
+  --color-dis: oklch(48% 0.04 60); /* umber/iron */
+  --color-cha: oklch(52% 0.16 345); /* madder pink */
+  --color-cra: oklch(60% 0.13 70); /* ochre */
 
-  /* Semantic */
-  --color-danger: oklch(62% 0.2 25);
-  --color-success: oklch(70% 0.15 155);
+  /* ——— semantic ——— */
+  --color-danger: oklch(45% 0.17 28);
+  --color-success: oklch(45% 0.10 155);
 
-  /* Fonts */
-  --font-display: var(--font-pixel), "Courier New", monospace;
+  /* ——— fonts ——— */
+  --font-display: var(--font-pixel), ui-monospace, monospace;
   --font-body: var(--font-body-sans), system-ui, sans-serif;
+  --font-nums: var(--font-nums-mono), ui-monospace, monospace;
 
-  /* Chunky JRPG border radius — consistent everywhere */
-  --radius-window: 10px;
+  /* ——— shape: paper is crisp ——— */
+  --radius-window: 2px;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background: var(--color-field);
+  background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-body);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, oklch(95% 0.05 95 / 0.6), transparent),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
-/* Starfield page background — subtle, fixed, GPU-cheap */
-.page-field {
-  position: relative;
-  min-height: 100dvh;
-  isolation: isolate;
-}
-.page-field::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(1200px 600px at 20% -10%, oklch(24% 0.07 280 / 0.55), transparent 65%),
-    radial-gradient(900px 500px at 85% 110%, oklch(20% 0.06 285 / 0.5), transparent 60%),
-    var(--color-field);
-}
-.page-field::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-}
-
-/* ————— JRPG window chrome ————— */
+/* ————— window chrome: ruled parchment + ink rules + hard offset shadow ————— */
 .jrpg-window {
   position: relative;
-  background: linear-gradient(180deg, oklch(26% 0.085 282 / 0.92), oklch(21% 0.075 280 / 0.92));
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 27px,
+      oklch(62% 0.03 70 / 0.12) 27px 28px
+    ),
+    var(--color-parchment);
   border: 2px solid var(--color-window-border);
   border-radius: var(--radius-window);
   box-shadow:
-    inset 0 1px 0 oklch(100% 0 0 / 0.08),
-    inset 0 0 0 2px oklch(14.5% 0.06 280 / 0.9),
-    0 4px 24px oklch(5% 0.02 280 / 0.5);
+    inset 0 0 0 1px var(--color-parchment),
+    inset 0 0 0 3px oklch(82% 0.04 83),
+    3px 3px 0 oklch(28% 0.03 55 / 0.85);
 }
 .jrpg-window-bright {
-  border-color: var(--color-window-border-bright);
+  border-color: var(--color-ink);
 }
 
-/* Corner rivets — the menu-box signature detail */
-.jrpg-rivets::before,
+/* corner rivets → wax seal (top-left) + ledger stitch (bottom-right) */
+.jrpg-rivets::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 15px;
+  height: 15px;
+  background: var(--color-gold);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 2px 0 oklch(58% 0.13 32),
+    inset 0 0 0 2.5px oklch(36% 0.10 30),
+    1px 1px 0 oklch(28% 0.03 55 / 0.5);
+  pointer-events: none;
+  z-index: 1;
+}
 .jrpg-rivets::after {
   content: "";
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: var(--color-gold);
-  box-shadow: 0 0 0 2px oklch(14.5% 0.06 280 / 0.9);
-  border-radius: 1px;
+  bottom: 6px;
+  right: 7px;
+  width: 12px;
+  height: 5px;
+  border: 1.5px solid oklch(62% 0.03 70 / 0.5);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
   pointer-events: none;
 }
-.jrpg-rivets::before {
-  top: 4px;
-  left: 4px;
-}
-.jrpg-rivets::after {
-  bottom: 4px;
-  right: 4px;
-}
 
-/* Pixel-perfect heading rendering helper */
+/* pixel display heading */
 .pixel-text {
   font-family: var(--font-display);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  -webkit-font-smoothing: none;
 }
 
-/* ATB-style stat bars — chunky, notched */
+/* big ledger numbers */
+.ledger-nums {
+  font-family: var(--font-nums);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ————— ATB stat bars: ink well + hand-hatched fill ————— */
 .stat-bar-track {
   position: relative;
   overflow: hidden;
-  background: oklch(12% 0.03 280);
-  border: 1.5px solid oklch(30% 0.05 280);
-  border-radius: 4px;
+  background: var(--color-parchment-deep);
+  border: 2px solid var(--color-window-border);
+  border-radius: 1px;
 }
 .stat-bar-fill {
   height: 100%;
-  background-image: linear-gradient(
+  background-image: repeating-linear-gradient(
     90deg,
-    oklch(100% 0 0 / 0.15) 0px,
-    oklch(100% 0 0 / 0) 3px,
-    oklch(100% 0 0 / 0) 100%
+    oklch(28% 0.03 55 / 0.16) 0 2px,
+    transparent 2px 6px
   );
-  background-size: 4px 100%;
+  box-shadow:
+    inset 0 -2px 0 oklch(28% 0.03 55 / 0.22),
+    inset 0 1px 0 oklch(100% 0 0 / 0.45);
   transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Buttons — chunky, tactile, gold primary */
+/* ————— buttons: ink-stamped ————— */
 .btn-jrpg {
   position: relative;
   display: inline-flex;
@@ -164,61 +170,60 @@ body {
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-radius: 6px;
+  border-radius: var(--radius-window);
   border-width: 2px;
   border-style: solid;
   transition:
-    transform 120ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 120ms,
-    box-shadow 120ms;
+    translate 100ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 100ms,
+    filter 100ms;
 }
 .btn-jrpg:active:not(:disabled) {
-  transform: translateY(1px) scale(0.98);
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 oklch(28% 0.03 55 / 0.85) !important;
 }
 .btn-jrpg:focus-visible {
-  outline: 2px solid var(--color-gold-bright);
+  outline: 3px solid oklch(46% 0.13 245);
   outline-offset: 2px;
 }
 .btn-primary {
-  background: linear-gradient(180deg, var(--color-gold-bright), var(--color-gold));
-  border-color: var(--color-gold-deep);
-  color: oklch(18% 0.05 80);
-  box-shadow:
-    inset 0 1px 0 oklch(100% 0 0 / 0.4),
-    0 2px 12px oklch(83% 0.16 88 / 0.25);
+  background: var(--color-gold);
+  border-color: oklch(30% 0.08 30);
+  color: oklch(96% 0.02 85);
+  box-shadow: 2px 2px 0 oklch(28% 0.03 55 / 0.9);
 }
 .btn-primary:hover:not(:disabled) {
-  filter: brightness(1.08);
+  filter: brightness(1.12);
 }
 .btn-primary:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 .btn-ghost {
-  background: oklch(21% 0.075 280 / 0.8);
+  background: var(--color-parchment-deep);
   border-color: var(--color-window-border);
   color: var(--color-ink);
+  box-shadow: 2px 2px 0 oklch(28% 0.03 55 / 0.7);
 }
 .btn-ghost:hover:not(:disabled) {
-  border-color: var(--color-window-border-bright);
-  background: oklch(26% 0.085 282 / 0.9);
+  background: var(--color-window-raised);
 }
 .btn-danger {
-  background: oklch(21% 0.075 280 / 0.8);
-  border-color: oklch(45% 0.13 25);
-  color: oklch(80% 0.1 25);
+  background: var(--color-parchment-deep);
+  border-color: oklch(50% 0.14 28);
+  color: oklch(40% 0.15 28);
+  box-shadow: 2px 2px 0 oklch(28% 0.03 55 / 0.7);
 }
 .btn-danger:hover:not(:disabled) {
   border-color: var(--color-danger);
-  color: oklch(88% 0.09 25);
 }
 
-/* Inputs */
+/* ————— inputs: inked wells ————— */
 .input-jrpg {
   width: 100%;
-  background: oklch(12.5% 0.04 280);
+  background: oklch(92% 0.03 87);
   border: 2px solid var(--color-window-border);
-  border-radius: 6px;
+  border-radius: 1px;
   padding: 0.65rem 0.8rem;
   color: var(--color-ink);
   font-family: var(--font-body);
@@ -229,49 +234,81 @@ body {
 }
 .input-jrpg:focus {
   outline: none;
-  border-color: var(--color-window-border-bright);
-  box-shadow: 0 0 0 3px oklch(72% 0.12 284 / 0.2);
+  border-color: oklch(46% 0.13 245);
+  box-shadow: 2px 2px 0 oklch(46% 0.13 245 / 0.35);
 }
 .input-jrpg[aria-invalid="true"] {
-  border-color: oklch(55% 0.18 25);
+  border-color: var(--color-danger);
 }
 
-/* Blinking cursor indicator — the "press start" energy */
+/* ————— quill cursor ————— */
 @keyframes cursor-blink {
   0%, 55% { opacity: 1; }
-  56%, 100% { opacity: 0.25; }
+  56%, 100% { opacity: 0.2; }
 }
 .cursor-blink {
   animation: cursor-blink 1.1s steps(1) infinite;
 }
 
-/* Text selection in theme */
 ::selection {
-  background: oklch(83% 0.16 88 / 0.3);
+  background: oklch(45% 0.13 30 / 0.25);
   color: var(--color-ink);
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-field-far);
 }
 ::-webkit-scrollbar-thumb {
-  background: oklch(30% 0.06 280);
-  border-radius: 5px;
+  background: oklch(62% 0.04 65);
   border: 2px solid var(--color-field-far);
+  border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(38% 0.07 280);
+  background: oklch(50% 0.04 60);
 }
 
-/* Reduced motion — collapse all celebration to instant */
+/* ————— wax stamp keyframe (seal day-entry) ————— */
+@keyframes wax-stamp {
+  0% { transform: scale(1.8) rotate(-14deg); opacity: 0; }
+  60% { transform: scale(0.94) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.wax-stamp-anim {
+  animation: wax-stamp 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ————— chest shake ————— */
+@keyframes chest-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-4deg); }
+  40% { transform: rotate(4deg); }
+  60% { transform: rotate(-3deg); }
+  80% { transform: rotate(2deg); }
+}
+.chest-shake-anim {
+  animation: chest-shake 600ms ease-in-out;
+}
+
+/* ————— crit flash ————— */
+@keyframes crit-flash {
+  0% { background-color: oklch(90% 0.09 95 / 0.55); }
+  100% { background-color: transparent; }
+}
+.crit-flash-anim {
+  animation: crit-flash 450ms ease-out;
+}
+
+/* reduced motion: everything lands instantly */
 @media (prefers-reduced-motion: reduce) {
   .stat-bar-fill,
   .btn-jrpg,
-  .cursor-blink {
+  .cursor-blink,
+  .wax-stamp-anim,
+  .chest-shake-anim,
+  .crit-flash-anim {
     transition: none;
     animation: none;
   }

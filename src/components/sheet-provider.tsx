@@ -2,7 +2,13 @@
 
 import { useEffect } from "react";
 import { useGameStore } from "@/lib/game/store";
-import type { AttributeRow, InventoryItem, Profile } from "@/lib/game/types";
+import type {
+  AttributeRow,
+  GearMap,
+  InventoryItem,
+  Profile,
+  Zone,
+} from "@/lib/game/types";
 
 /** Hydrates the zustand store from the server-loaded sheet, then loads tasks. */
 export function SheetProvider({
@@ -13,6 +19,8 @@ export function SheetProvider({
     profile: Profile | null;
     attributes: AttributeRow[];
     inventory: InventoryItem[];
+    gear?: GearMap;
+    zones?: Zone[];
   };
   children: React.ReactNode;
 }) {

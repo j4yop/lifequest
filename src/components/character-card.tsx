@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import { Coins, Flame, Sparkle, Sword } from "@phosphor-icons/react";
-import type { Profile } from "@/lib/game/types";
+import { Coins, Flame, Sparkle, DiceFive } from "@phosphor-icons/react";
+import type { AttributeRow, GearMap, Profile } from "@/lib/game/types";
 import { StatBar, Window, WindowTitle } from "@/components/ui";
+import { PaperDollAvatar, GearSlots } from "@/components/paper-doll";
 
 /** Needed XP for the next profile level (mirror of the server curve). */
 export function xpNeeded(level: number): number {
@@ -14,61 +14,31 @@ export function xpNeeded(level: number): number {
 export function CharacterCard({
   profile,
   equippedTitle,
-  equippedFrame,
+  gear,
+  attributes,
+  newGear,
 }: {
   profile: Profile;
   equippedTitle?: string;
-  equippedFrame?: string;
+  gear: GearMap;
+  attributes: AttributeRow[];
+  newGear?: string | null;
 }) {
-  const reduce = useReducedMotion();
   const need = xpNeeded(profile.level);
-
-  const frameBorders: Record<string, string> = {
-    "frame-bronze": "var(--color-rarity-common)",
-    "frame-silver": "var(--color-rarity-uncommon)",
-    "frame-gold": "var(--color-gold)",
-    "frame-rainbow": "var(--color-rarity-legendary)",
-  };
 
   return (
     <Window as="article" className="overflow-hidden">
       <WindowTitle>Character</WindowTitle>
       <div className="p-4 sm:p-6">
         <div className="flex items-start gap-4">
-          {/* Avatar sigil */}
+          {/* Paper-doll avatar */}
           <div className="relative shrink-0">
-            <div
-              className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-[3px]"
-              style={{
-                borderColor:
-                  equippedFrame && frameBorders[equippedFrame]
-                    ? frameBorders[equippedFrame]
-                    : "var(--color-window-border)",
-                backgroundImage:
-                  equippedFrame === "frame-rainbow"
-                    ? "linear-gradient(135deg, var(--color-rarity-rare), var(--color-rarity-epic), var(--color-rarity-legendary))"
-                    : undefined,
-              }}
-              aria-hidden="true"
-            >
-              <Sword
-                size={34}
-                weight="duotone"
-                className="text-gold"
-                aria-hidden="true"
-              />
-            </div>
-            {/* level badge */}
-            <motion.div
-              key={profile.level}
-              initial={reduce ? false : { scale: 0.4, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className="pixel-text absolute -bottom-2 -right-2 flex h-9 min-w-9 items-center justify-center rounded-[6px] border-2 border-gold-deep bg-window-deep px-1.5 text-[11px] text-gold"
-              aria-label={`Level ${profile.level}`}
-            >
-              {profile.level}
-            </motion.div>
+            <PaperDollAvatar
+              gear={gear}
+              level={profile.level}
+              size={96}
+              animateNewGear={newGear}
+            />
           </div>
 
           {/* Name + class + title */}
@@ -83,7 +53,7 @@ export function CharacterCard({
               )}
             </p>
 
-            {/* Gold + streak */}
+            {/* Gold + streak + crits */}
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
               <span className="inline-flex items-center gap-1.5 text-gold tabular-nums">
                 <Coins size={16} weight="duotone" aria-hidden="true" />
@@ -102,6 +72,15 @@ export function CharacterCard({
                 />
                 {profile.streak_count}d streak
               </span>
+              {(profile.crit_count ?? 0) > 0 && (
+                <span
+                  className="inline-flex items-center gap-1 text-gold tabular-nums text-xs font-bold"
+                  title="Natural 20s rolled"
+                >
+                  <DiceFive size={14} weight="fill" aria-hidden="true" />
+                  {profile.crit_count} crit{profile.crit_count === 1 ? "" : "s"}
+                </span>
+              )}
               {profile.streak_best > 1 && (
                 <span className="inline-flex items-center gap-1 text-ink-faint tabular-nums text-xs">
                   best {profile.streak_best}d
@@ -124,7 +103,14 @@ export function CharacterCard({
           </div>
           <StatBar value={profile.xp} max={need} size="lg" label={undefined} showNumbers={false} />
         </div>
+
+        {/* Equipment pips */}
+        <div className="mt-5">
+          <p className="pixel-text mb-2 text-[9px] text-ink-dim">Equipment</p>
+          <GearSlots gear={gear} attributes={attributes} />
+        </div>
       </div>
     </Window>
   );
 }
+

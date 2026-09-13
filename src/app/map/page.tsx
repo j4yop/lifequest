@@ -1,0 +1,54 @@
+import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
+import { GameShell } from "@/components/game-shell";
+import { SheetProvider } from "@/components/sheet-provider";
+import { WorldMap } from "@/components/world-map";
+
+export const metadata: Metadata = {
+  title: "World Map",
+  description: "The Sunken Road — zones of your chronicle, unlocked by levels.",
+};
+
+export default async function MapPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: sheet } = await supabase.rpc("get_character_sheet");
+
+  return (
+    <GameShell>
+      <SheetProvider
+        initialSheet={{
+          profile: sheet?.profile ?? null,
+          attributes: sheet?.attributes ?? [],
+          inventory: sheet?.inventory ?? [],
+          gear: sheet?.gear ?? {},
+          zones: sheet?.zones ?? [],
+        }}
+      >
+        <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-10">
+          <div className="mb-6">
+            <h1 className="pixel-text text-sm sm:text-base leading-relaxed text-ink">
+              World Map
+            </h1>
+            <p className="mt-1 text-sm text-ink-faint font-body">
+              Every level you earn walks the road further. Fog hides what you
+              haven&apos;t yet become.
+            </p>
+          </div>
+          {sheet?.profile ? (
+            <WorldMap zones={sheet?.zones ?? []} profile={sheet.profile} />
+          ) : (
+            <p className="text-sm text-ink-dim font-body">
+              Character sheet not found.
+            </p>
+          )}
+        </div>
+      </SheetProvider>
+    </GameShell>
+  );
+}

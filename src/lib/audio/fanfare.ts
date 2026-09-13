@@ -96,3 +96,34 @@ export function playErrorBuzz() {
     { freq: 123.47, start: 0.1, dur: 0.18, type: "sawtooth", gain: 0.09 },
   ]);
 }
+
+/** Crit: metal glissando + coin spray — the nat-20 sound. */
+export function playCritSting() {
+  playNotes(
+    [
+      { freq: 880, start: 0, dur: 0.09, type: "sawtooth", gain: 0.12 },
+      { freq: 1174.66, start: 0.07, dur: 0.09, type: "sawtooth", gain: 0.12 },
+      { freq: 1567.98, start: 0.14, dur: 0.12, type: "sawtooth", gain: 0.14 },
+      { freq: 2093, start: 0.22, dur: 0.4, type: "square", gain: 0.16 },
+      // coin spray
+      { freq: N.E6, start: 0.26, dur: 0.08, type: "triangle", gain: 0.14 },
+      { freq: N.C7, start: 0.32, dur: 0.08, type: "triangle", gain: 0.12 },
+      { freq: 2349.32, start: 0.38, dur: 0.22, type: "triangle", gain: 0.1 },
+    ],
+    0.16
+  );
+}
+
+/** Chest open: low creak thud + treasure shimmer. */
+export function playChestSound() {
+  playNotes(
+    [
+      { freq: 98, start: 0, dur: 0.22, type: "triangle", gain: 0.22 },
+      { freq: 146.83, start: 0.1, dur: 0.18, type: "triangle", gain: 0.16 },
+      { freq: N.E6, start: 0.24, dur: 0.1, type: "triangle", gain: 0.12 },
+      { freq: N.G6, start: 0.3, dur: 0.1, type: "triangle", gain: 0.1 },
+      { freq: N.C7, start: 0.36, dur: 0.3, type: "triangle", gain: 0.12 },
+    ],
+    0.16
+  );
+}

@@ -86,7 +86,20 @@ export interface Profile {
   streak_count: number;
   streak_best: number;
   last_active_date: string | null;
+  crit_count?: number;
+  chest_last_claimed?: string | null;
   created_at: string;
+}
+
+/** Gear tier per attribute slot (0 = plain clothes). */
+export type GearMap = Partial<Record<AttributeKey, number>>;
+
+export interface Zone {
+  id: number;
+  name: string;
+  lore: string;
+  unlock_level: number;
+  order_index: number;
 }
 
 export interface Task {
@@ -138,6 +151,39 @@ export interface CompleteTaskResult {
   new_level: number;
   streak_increased: boolean;
   streak_frozen: boolean;
+  crit?: boolean;
+  crit_roll?: number;
+  gear_granted?: string | null;
   profile: Profile;
   attributes: AttributeRow[];
+  gear?: GearMap;
 }
+
+export interface ClaimChestResult {
+  gold_gained: number;
+  item_slug: string | null;
+  item_name: string | null;
+  item_rarity: string | null;
+  profile: Profile;
+}
+
+/** Gear tier earned per attribute level (mirror of the server rule). */
+export function gearTierForLevel(level: number): number {
+  if (level >= 10) return 3;
+  if (level >= 6) return 2;
+  if (level >= 3) return 1;
+  return 0;
+}
+
+/** Slot each attribute owns on the paper-doll. */
+export const GEAR_SLOT_META: Record<
+  AttributeKey,
+  { label: string; thresholds: [number, number, number] }
+> = {
+  str: { label: "Weapon", thresholds: [3, 6, 10] },
+  int: { label: "Tome", thresholds: [3, 6, 10] },
+  vit: { label: "Armor", thresholds: [3, 6, 10] },
+  dis: { label: "Helm", thresholds: [3, 6, 10] },
+  cha: { label: "Cloak", thresholds: [3, 6, 10] },
+  cra: { label: "Instrument", thresholds: [3, 6, 10] },
+};

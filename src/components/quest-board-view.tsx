@@ -8,22 +8,23 @@ import { TIER_META } from "@/lib/game/types";
 import { AttributesPanel } from "@/components/attributes-panel";
 import { CharacterCard } from "@/components/character-card";
 import { QuestBoard } from "@/components/quest-board";
-import { LevelUpOverlay, XPOrbBurst } from "@/components/celebration";
-import { playLevelUpFanfare } from "@/lib/audio/fanfare";
+import { LevelUpOverlay, XPOrbBurst, CritBanner } from "@/components/celebration";
+import { DailyChest } from "@/components/daily-chest";
+import { playLevelUpFanfare, playCritSting } from "@/lib/audio/fanfare";
+import { MapTrifold } from "@phosphor-icons/react";
 
 /**
  * The quest board page composition: character card + attributes + quest list,
- * with celebration FX wired in.
+ * with celebration FX, daily chest, and crit banners wired in.
  */
 export function QuestBoardView({
   equippedTitle,
-  equippedFrame,
 }: {
   equippedTitle?: string;
-  equippedFrame?: string;
 }) {
   const profile = useGameStore((s) => s.profile);
   const attributes = useGameStore((s) => s.attributes);
+  const gear = useGameStore((s) => s.gear);
   const celebrateLevelUp = useGameStore((s) => s.celebrateLevelUp);
   const lastCompletion = useGameStore((s) => s.lastCompletion);
   const clearCelebration = useGameStore((s) => s.clearCelebration);
@@ -31,9 +32,16 @@ export function QuestBoardView({
     origin: { x: number; y: number };
     xpGained: number;
   } | null>(null);
+  const [critRoll, setCritRoll] = useState<number | null>(null);
 
   function handleCompleted(task: Task, origin: { x: number; y: number }) {
-    setOrb({ origin, xpGained: TIER_META[task.tier].xp });
+    const result = useGameStore.getState().lastCompletion;
+    if (result?.crit) {
+      setCritRoll(result.crit_roll ?? 20);
+      playCritSting();
+      setTimeout(() => setCritRoll(null), 2600);
+    }
+    setOrb({ origin, xpGained: result?.xp_gained ?? TIER_META[task.tier].xp });
     setTimeout(() => setOrb(null), 900);
   }
 
@@ -52,7 +60,10 @@ export function QuestBoardView({
               Complete quests, earn gold, keep the streak alive.
             </p>
           </div>
-          <nav aria-label="Shop">
+          <nav aria-label="Game" className="flex items-center gap-2">
+            <Link href="/map" className="btn-jrpg btn-ghost px-4 py-2 text-[10px]">
+              <MapTrifold size={12} weight="duotone" aria-hidden="true" /> World Map
+            </Link>
             <Link href="/shop" className="btn-jrpg btn-ghost px-4 py-2 text-[10px]">
               Guild Shop
             </Link>
@@ -66,9 +77,12 @@ export function QuestBoardView({
             <CharacterCard
               profile={profile}
               equippedTitle={equippedTitle}
-              equippedFrame={equippedFrame}
+              gear={gear}
+              attributes={attributes}
+              newGear={lastCompletion?.gear_granted}
             />
             <AttributesPanel attributes={attributes} />
+            <DailyChest profile={profile} />
           </div>
 
           {/* right column: quests */}
@@ -78,6 +92,9 @@ export function QuestBoardView({
 
       {/* celebration FX */}
       {orb && <XPOrbBurst origin={orb.origin} xpGained={orb.xpGained} />}
+      {critRoll !== null && (
+        <CritBanner roll={critRoll} onDone={() => setCritRoll(null)} />
+      )}
       {celebrateLevelUp && lastCompletion && (
         <LevelUpOverlay
           result={lastCompletion}

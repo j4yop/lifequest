@@ -52,8 +52,8 @@ test("design QA — computed styles and layout invariants", async ({ page }) => 
   });
 
   // Assertions
-  expect(audit.h1Font).toContain("Press"); // Press Start 2P
-  expect(audit.bodyFont).toContain("Nunito");
+  expect(audit.h1Font).toContain("Silkscreen"); // Ledgerlight display font
+  expect(audit.bodyFont).toContain("Atkinson"); // Atkinson Hyperlegible body
   expect(audit.docOverflow as number).toBeLessThanOrEqual(0);
   expect(audit.unnamedButtons as number).toBe(0);
   expect(audit.unlabeledInputs as number).toBe(0);

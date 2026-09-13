@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignOut, Sword, Storefront } from "@phosphor-icons/react";
+import { SignOut, Sword, Storefront, MapTrifold } from "@phosphor-icons/react";
 import { Toaster } from "@/components/toaster";
 import { OfflineBanner } from "@/components/offline-banner";
 
@@ -14,6 +14,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
 
   const links = [
     { href: "/quests", label: "Quests", icon: <Sword size={14} weight="duotone" aria-hidden="true" /> },
+    { href: "/map", label: "Map", icon: <MapTrifold size={14} weight="duotone" aria-hidden="true" /> },
     { href: "/shop", label: "Shop", icon: <Storefront size={14} weight="duotone" aria-hidden="true" /> },
   ];
 
@@ -29,7 +30,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
             Life<span className="text-ink">Quest</span>
           </Link>
 
-          <nav aria-label="Game" className="flex items-center gap-1.5 sm:gap-2">
+          <nav aria-label="Game" className="flex items-center gap-1 sm:gap-2">
             {links.map((l) => {
               const active = pathname.startsWith(l.href);
               return (
@@ -37,12 +38,12 @@ export function GameShell({ children }: { children: React.ReactNode }) {
                   key={l.href}
                   href={l.href}
                   aria-current={active ? "page" : undefined}
-                  className={`btn-jrpg px-3 py-1.5 text-[10px] ${
+                  className={`btn-jrpg px-2.5 py-1.5 text-[10px] ${
                     active ? "btn-primary" : "btn-ghost"
                   }`}
                 >
                   {l.icon}
-                  <span className="hidden min-[380px]:inline">{l.label}</span>
+                  <span className="hidden min-[460px]:inline">{l.label}</span>
                 </Link>
               );
             })}
@@ -50,7 +51,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
             <form action="/api/auth/signout" method="post">
               <button
                 type="submit"
-                className="btn-jrpg btn-ghost px-3 py-1.5 text-[10px]"
+                className="btn-jrpg btn-ghost px-2.5 py-1.5 text-[10px]"
                 aria-label="Sign out"
                 title="Sign out"
               >

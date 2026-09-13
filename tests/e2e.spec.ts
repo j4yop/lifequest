@@ -51,9 +51,10 @@ test.describe("Life Quest — full journey", () => {
     await expect(page.getByText("100xp", { exact: false })).toBeVisible();
 
     // ——— 6. Refresh — persistence proof ———
+    // (a nat-20 crit doubles gold 45 → 90, so accept either)
     await page.reload();
     await expect(page.getByText("Slay the E2E dragon")).toBeVisible();
-    await expect(page.getByText(/\b45\b/).first()).toBeVisible(); // gold
+    await expect(page.getByText(/\b(45|90)\b/).first()).toBeVisible(); // gold
     await expect(page.getByText("1d streak").first()).toBeVisible();
 
     // ——— 7. Second session — login flow ———
@@ -70,5 +71,34 @@ test.describe("Life Quest — full journey", () => {
     await page.getByLabel("Password").fill("wrongpassword");
     await page.getByRole("button", { name: "Enter the Guild" }).click();
     await expect(page.getByRole("alert").first()).toBeVisible();
+  });
+
+  test("world map shows zone 1 unlocked, chest claims once per day", async ({
+    page,
+  }) => {
+    const email = `map-${Date.now()}@lifequest.dev`;
+    await page.goto("/signup");
+    await page.getByLabel("Hero name").fill("MapHero");
+    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Password").fill("questhero123");
+    await page.getByRole("button", { name: "Begin Adventure" }).click();
+    await expect(page.getByRole("heading", { name: "MapHero" })).toBeVisible();
+
+    // daily chest: claim once
+    const chestBtn = page.getByRole("button", {
+      name: /open the daily adventurer's chest/i,
+    });
+    await expect(chestBtn).toBeVisible();
+    await chestBtn.click();
+    await expect(page.getByText(/gold/i).first()).toBeVisible({ timeout: 8000 });
+
+    // world map: zone 1 unlocked, higher zones fogged
+    await page.getByRole("link", { name: "Map" }).first().click();
+    await expect(page.getByRole("heading", { name: "World Map" })).toBeVisible();
+    await expect(page.getByText("The Hearthstead").first()).toBeVisible();
+    // select the last chronicle entry (max level zone) — still under fog
+    const rosterButtons = page.getByRole("list", { name: "Zone roster" }).getByRole("button");
+    await rosterButtons.last().click();
+    await expect(page.getByText(/The fog lifts at level 18/).first()).toBeVisible();
   });
 });
