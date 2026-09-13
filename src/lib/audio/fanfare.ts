@@ -127,3 +127,21 @@ export function playChestSound() {
     0.16
   );
 }
+
+/** Retro Pokemon-style map cursor blip. */
+export function playMapBlip() {
+  playNotes([
+    { freq: 880, start: 0, dur: 0.04, type: "square", gain: 0.09 },
+    { freq: 1318.5, start: 0.03, dur: 0.06, type: "square", gain: 0.08 },
+  ]);
+}
+
+/** Route selection chime. */
+export function playRouteChirp() {
+  playNotes([
+    { freq: 659.25, start: 0, dur: 0.05, type: "triangle", gain: 0.12 },
+    { freq: 987.77, start: 0.04, dur: 0.07, type: "triangle", gain: 0.12 },
+    { freq: 1318.5, start: 0.09, dur: 0.12, type: "square", gain: 0.1 },
+  ]);
+}
+

@@ -31,17 +31,34 @@ export default async function MapPage() {
         }}
       >
         <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-10">
-          <div className="mb-6">
-            <h1 className="pixel-text text-sm sm:text-base leading-relaxed text-ink">
-              World Map
-            </h1>
-            <p className="mt-1 text-sm text-ink-faint font-body">
-              Every level you earn walks the road further. Fog hides what you
-              haven&apos;t yet become.
-            </p>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="pixel-text text-base sm:text-lg leading-tight text-ink">
+                  World Map
+                </h1>
+                <span className="pixel-text text-[10px] rounded bg-gold/15 text-gold border border-gold/40 px-2 py-0.5 font-bold">
+                  The Sunken Road
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-ink-faint font-body">
+                Every level you earn walks the road further. Explore the sovereign biomes, master your attributes, and lift the fog of war.
+              </p>
+            </div>
+            {sheet?.profile && (
+              <div className="flex items-center gap-3 pixel-text text-xs text-ink-dim">
+                <span className="border-2 border-window-border bg-window px-2.5 py-1 rounded">
+                  Lv {sheet.profile.level} {sheet.profile.class_name}
+                </span>
+              </div>
+            )}
           </div>
           {sheet?.profile ? (
-            <WorldMap zones={sheet?.zones ?? []} profile={sheet.profile} />
+            <WorldMap
+              zones={sheet?.zones ?? []}
+              profile={sheet.profile}
+              attributes={sheet?.attributes ?? []}
+            />
           ) : (
             <p className="text-sm text-ink-dim font-body">
               Character sheet not found.
