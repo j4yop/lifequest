@@ -5,11 +5,18 @@ import { usePathname } from "next/navigation";
 import { SignOut, Sword, Storefront, MapTrifold } from "@phosphor-icons/react";
 import { Toaster } from "@/components/toaster";
 import { OfflineBanner } from "@/components/offline-banner";
+import { ThemeApplier } from "@/components/theme-applier";
 
 /**
- * Shell for authenticated game pages: top nav + toaster.
+ * Shell for authenticated game pages: top nav + toaster + equipped theme.
  */
-export function GameShell({ children }: { children: React.ReactNode }) {
+export function GameShell({
+  children,
+  equippedThemeSlug,
+}: {
+  children: React.ReactNode;
+  equippedThemeSlug?: string | null;
+}) {
   const pathname = usePathname();
 
   const links = [
@@ -20,6 +27,7 @@ export function GameShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="page-field flex min-h-[100dvh] flex-col">
+      <ThemeApplier equippedThemeSlug={equippedThemeSlug} />
       <OfflineBanner />
       <header className="sticky top-0 z-30 border-b-2 border-window-border/60 bg-field/85 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">

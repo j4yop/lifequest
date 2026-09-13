@@ -4,6 +4,16 @@ export type DifficultyTier = "trivial" | "easy" | "medium" | "hard" | "epic";
 export type AttributeKey = "str" | "int" | "vit" | "dis" | "cha" | "cra";
 export type ItemKind = "frame" | "title" | "badge" | "theme" | "consumable";
 export type Rarity = "common" | "uncommon" | "rare" | "epic" | "legendary";
+export type Recurrence = "none" | "daily" | "weekly";
+
+export const RECURRENCE_META: Record<
+  Recurrence,
+  { label: string; blurb: string }
+> = {
+  none: { label: "One-shot", blurb: "A single deed, entered once." },
+  daily: { label: "Daily", blurb: "Resets at UTC midnight; builds a streak." },
+  weekly: { label: "Weekly", blurb: "Resets each week; builds a streak." },
+};
 
 export const ATTRIBUTE_META: Record<
   AttributeKey,
@@ -109,7 +119,14 @@ export interface Task {
   notes: string | null;
   tier: DifficultyTier;
   attribute: AttributeKey;
+  recurrence: Recurrence;
   completed: boolean;
+  /** True when done for the current period (dailies/weeklies roll over). */
+  done_now?: boolean;
+  rewards_paid?: boolean;
+  task_streak?: number;
+  best_streak?: number;
+  last_paid_period?: string | null;
   completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -154,9 +171,22 @@ export interface CompleteTaskResult {
   crit?: boolean;
   crit_roll?: number;
   gear_granted?: string | null;
+  reopened_no_reward?: boolean;
+  quest_streak?: number;
+  quest_multiplier?: number;
+  achievements?: Achievement[];
   profile: Profile;
   attributes: AttributeRow[];
   gear?: GearMap;
+}
+
+/** An achievement unlocked in the same transaction as the action. */
+export interface Achievement {
+  slug: string;
+  name: string;
+  description: string;
+  rarity: Rarity;
+  gold_reward: number;
 }
 
 export interface ClaimChestResult {
@@ -164,6 +194,7 @@ export interface ClaimChestResult {
   item_slug: string | null;
   item_name: string | null;
   item_rarity: string | null;
+  achievements?: Achievement[];
   profile: Profile;
 }
 
