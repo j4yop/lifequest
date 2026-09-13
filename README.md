@@ -14,14 +14,18 @@ Turn your real life into a role-playing game. Complete real-world quests, level 
 
 ## Features
 
-- **Server-authoritative progression engine** — XP, gold, attribute gains, streaks, and level-ups are computed and applied inside a single atomic Postgres function (`complete_task`). The client never computes rewards; it can't cheat.
+- **Server-authoritative progression engine** — XP, gold, attribute gains, streaks, crit rolls, gear grants, and level-ups are computed and applied inside a single atomic Postgres function (`complete_task`). The client never computes rewards; it can't cheat.
 - **Non-linear leveling** — `xpNeeded(n) = round(100 × n^1.5)`. Every level costs more than the last.
 - **Six attributes** — Strength, Intellect, Vitality, Discipline, Charisma, Craft. Quests are tagged with an attribute; completing them levels that stat.
+- **D20 crit rolls** — every quest completion rolls a d20 server-side. A natural 20 doubles XP and gold, counts on your profile, and fires a crit banner + metal sting.
+- **Paper-doll hero** — a layered SVG avatar with six gear slots (one per attribute: weapon, tome, armor, helm, cloak, instrument). Attribute levels 3/6/10 auto-grant visible tier-1/2/3 gear, drawn on the doll.
+- **World map with fog-of-war** — the Sunken Road: eight zones with lore, unlocked by total character level (1 → 18). Locked zones stay under fog.
+- **Daily adventurer's chest** — one claim per UTC day: streak-scaled gold plus a weighted loot roll (badges, consumables, frames, titles).
 - **Streaks** — consecutive active days, tracked server-side in UTC. A Streak Freeze item protects one missed day.
 - **Guild shop economy** — earn gold, buy avatar frames, titles, badges, themes, and streak protection.
 - **Full CRUD quests** — create, read, update, delete, complete, and reopen quests; five difficulty tiers.
 - **Auth & isolation** — Supabase Auth with Row Level Security on every table. You only ever see your own data.
-- **Themed, tactile UI** — 16-bit JRPG window chrome, chiptune victory fanfare (WebAudio, no audio files), XP orb animations, and a full-screen level-up celebration. Respects `prefers-reduced-motion`.
+- **Ledgerlight UI** — a scribe's parchment-and-ink theme: wax-seal accents, medieval-pigment rarity ramp (umber → verdigris → cobalt → carmine → gold leaf), Silkscreen + Atkinson Hyperlegible + VT323 type, chiptune fanfares (WebAudio, no audio files), XP orbs, level-up and crit celebrations. Respects `prefers-reduced-motion`.
 
 ## Getting started
 
