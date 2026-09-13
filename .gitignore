@@ -43,3 +43,4 @@ test-results/
 playwright-report/
 shots/
 .vercel
+.commandcode/
