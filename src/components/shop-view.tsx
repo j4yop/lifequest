@@ -45,6 +45,15 @@ const RARITY_BORDER: Record<string, string> = {
   legendary: "border-rarity-legendary/60",
 };
 
+function messageOf(err: unknown, fallback: string): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "object" && err !== null && "message" in err) {
+    const m = (err as { message?: unknown }).message;
+    if (typeof m === "string" && m) return m;
+  }
+  return fallback;
+}
+
 function ShopCard({
   item,
   owned,
@@ -74,7 +83,7 @@ function ShopCard({
       onDone();
     } catch (err) {
       playErrorBuzz();
-      pushToast("danger", err instanceof Error ? err.message : "Purchase failed.");
+      pushToast("danger", messageOf(err, "Purchase failed."));
     } finally {
       setBusy(false);
     }
